@@ -7,6 +7,7 @@
 
 MonitorController::MonitorController()
 {
+    // TODO Check if `VESA Monitor Control Command Set` is supported
     HWND windowHandle = FindWindowA(nullptr, nullptr);
 
     if (windowHandle == nullptr) {

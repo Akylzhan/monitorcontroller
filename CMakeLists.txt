@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -17,6 +17,8 @@ set(PROJECT_SOURCES
         trayicon.h
         monitorcontroller.cpp
         monitorcontroller.h
+        caffeine.cpp
+        caffeine.h
 )
 
 qt_add_executable(MonitorController
@@ -27,12 +29,14 @@ qt_add_executable(MonitorController
 target_link_libraries(MonitorController PRIVATE
     Qt6::Widgets
     Qt6::Core
+    Qt6::Gui
     dxva2.lib
 )
 
 # <a href="https://www.flaticon.com/free-icons/sun" title="sun icons">Sun icons created by Freepik - Flaticon</a>
+# <a href="https://www.flaticon.com/free-icons/coffee" title="coffee icons">Coffee icons created by Freepik - Flaticon</a>
 qt_add_resources(MonitorController "images"
-    FILES "icon.png"
+    FILES "icon.png" "coffee.png"
 )
 
 set_target_properties(MonitorController PROPERTIES
