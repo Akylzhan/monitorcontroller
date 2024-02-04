@@ -96,11 +96,17 @@ void TrayIcon::createActions()
     )");
 
     connect(slider, &QAbstractSlider::valueChanged, this, [this](int newValue) {
-        displayController.setBrightness(newValue);
+        monitorController.setBrightness(newValue);
     });
 
     connect(this, &QSystemTrayIcon::activated, this, [this, slider]() {
-        slider->setValue(displayController.getCurrentBrightness());
+        bool found = monitorController.findPrimaryMonitor();
+        slider->setEnabled(found);
+        caffeineSubmenu->setEnabled(found);
+        if (!found) {
+            return;
+        }
+        slider->setValue(monitorController.getCurrentBrightness());
     });
 
     sliderAction = new QWidgetAction(menu);

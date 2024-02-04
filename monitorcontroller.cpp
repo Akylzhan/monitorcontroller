@@ -7,23 +7,6 @@
 
 MonitorController::MonitorController()
 {
-    // TODO Check if `VESA Monitor Control Command Set` is supported
-    HWND windowHandle = FindWindowA(nullptr, nullptr);
-
-    if (windowHandle == nullptr) {
-        qFatal() << "FindWindow failed";
-        return;
-    }
-
-    HMONITOR monitorHandle = MonitorFromWindow(windowHandle, MONITOR_DEFAULTTOPRIMARY);
-
-    physicalMonitor = static_cast<LPPHYSICAL_MONITOR>(new PHYSICAL_MONITOR);
-    auto success = GetPhysicalMonitorsFromHMONITOR(monitorHandle, 1, physicalMonitor);
-
-    if (!success) {
-        qFatal() << "could not get physical monitors";
-        return;
-    }
 }
 
 MonitorController::~MonitorController()
@@ -32,7 +15,7 @@ MonitorController::~MonitorController()
     delete physicalMonitor;
 }
 
-int MonitorController::getCurrentBrightness()
+int MonitorController::getCurrentBrightness() const
 {
     DWORD min, value, max;
     auto success = GetMonitorBrightness(physicalMonitor->hPhysicalMonitor, &min, &value, &max);
@@ -51,4 +34,27 @@ void MonitorController::setBrightness(int newValue)
     if (!success) {
         qFatal() << "SetMonitorBrightness failed";
     }
+}
+
+bool MonitorController::findPrimaryMonitor()
+{
+    // TODO Check if `VESA Monitor Control Command Set` is supported
+    HWND windowHandle = FindWindowA(nullptr, nullptr);
+
+    if (windowHandle == nullptr) {
+        qFatal() << "FindWindow failed";
+        return false;
+    }
+
+    HMONITOR monitorHandle = MonitorFromWindow(windowHandle, MONITOR_DEFAULTTOPRIMARY);
+
+    physicalMonitor = static_cast<LPPHYSICAL_MONITOR>(new PHYSICAL_MONITOR);
+    auto success = GetPhysicalMonitorsFromHMONITOR(monitorHandle, 1, physicalMonitor);
+
+    if (!success) {
+        qFatal() << "could not get physical monitors";
+        return false;
+    }
+
+    return true;
 }

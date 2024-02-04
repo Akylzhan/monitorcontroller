@@ -33,7 +33,7 @@ private:
 
     Caffeine caffeine;
 
-    MonitorController displayController;
+    MonitorController monitorController;
 
     QIcon defaultIcon;
     QIcon coffeeIcon;

@@ -9,8 +9,9 @@ public:
     MonitorController();
     ~MonitorController();
 
-    int getCurrentBrightness();
+    int getCurrentBrightness() const;
     void setBrightness(int newValue);
+    bool findPrimaryMonitor();
 
 private:
     LPPHYSICAL_MONITOR physicalMonitor;
